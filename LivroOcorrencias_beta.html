@@ -985,11 +985,6 @@ function render() {
         <label style="background:none;border:1px solid ${T.btnOutline};border-radius:4px;padding:4px 11px;cursor:pointer;font-size:10px;color:${T.btnOutlineText};font-family:inherit;font-weight:600;display:inline-flex;gap:3px;align-items:center;">
           📂 Importar<input type="file" accept=".json" style="display:none;" onchange="importFile(event)">
         </label>
-        <div style="display:flex;gap:1px;">
-          <button onclick="setView('log')" style="background:none;border:none;font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 14px;cursor:pointer;font-family:inherit;border-radius:5px;color:${view==="log"?T.navAc:T.muted};background:${view==="log"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="log"?T.navAc:"transparent"};">REGISTRO</button>
-          <button onclick="setView('relatorio')" style="background:none;border:none;font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 14px;cursor:pointer;font-family:inherit;border-radius:5px;color:${view==="relatorio"?T.navAc:T.muted};background:${view==="relatorio"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="relatorio"?T.navAc:"transparent"};">RELATÓRIOS</button>
-          <button onclick="setView('estatisticas')" style="background:none;border:none;font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 14px;cursor:pointer;font-family:inherit;border-radius:5px;color:${view==="estatisticas"?T.navAc:T.muted};background:${view==="estatisticas"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="estatisticas"?T.navAc:"transparent"};">ESTATÍSTICAS</button>
-        </div>
       </div>
     </div>
   </div>
@@ -1007,13 +1002,13 @@ function render() {
            </span>`
         : `<span style="font-size:11px;color:${T.muted};font-style:italic;">Nenhum operador em turno</span>`
       }
-      <div style="position:relative;margin-left:auto;display:flex;gap:6px;">
-        ${activeOp ? `<button onclick="encerrarTurno()" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:4px 10px;font-size:10px;color:${T.muted};cursor:pointer;font-family:inherit;">Encerrar Turno</button>` : ""}
+      <div style="position:relative;display:flex;gap:6px;">
         <button onclick="togglePanel('turno')" style="background:${T.navAc};color:#fff;border:none;border-radius:4px;padding:4px 12px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;">
           ${activeOp ? "🔄 Trocar" : "👤 Assumir Turno"}
         </button>
+        ${activeOp ? `<button onclick="encerrarTurno()" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:4px 10px;font-size:10px;color:${T.muted};cursor:pointer;font-family:inherit;">Encerrar Turno</button>` : ""}
         ${panelOpen==="turno" ? `
-        <div style="position:absolute;top:calc(100% + 6px);right:0;z-index:200;background:${T.surface};border:1px solid ${T.border};border-radius:8px;padding:14px;min-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.15);">
+        <div style="position:absolute;top:calc(100% + 6px);left:0;z-index:200;background:${T.surface};border:1px solid ${T.border};border-radius:8px;padding:14px;min-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.15);">
           <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:${T.muted};margin-bottom:10px;">SELECIONE SEU NOME</div>
           ${operadoresList.length>0 ? `
           <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:12px;">
@@ -1038,6 +1033,11 @@ function render() {
             </div>
           </div>
         </div>` : ""}
+      </div>
+      <div style="margin-left:auto;display:flex;gap:1px;">
+        <button onclick="setView('log')" style="background:none;border:none;font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 14px;cursor:pointer;font-family:inherit;border-radius:5px;color:${view==="log"?T.navAc:T.muted};background:${view==="log"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="log"?T.navAc:"transparent"};">REGISTRO</button>
+        <button onclick="setView('relatorio')" style="background:none;border:none;font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 14px;cursor:pointer;font-family:inherit;border-radius:5px;color:${view==="relatorio"?T.navAc:T.muted};background:${view==="relatorio"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="relatorio"?T.navAc:"transparent"};">RELATÓRIOS</button>
+        <button onclick="setView('estatisticas')" style="background:none;border:none;font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 14px;cursor:pointer;font-family:inherit;border-radius:5px;color:${view==="estatisticas"?T.navAc:T.muted};background:${view==="estatisticas"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="estatisticas"?T.navAc:"transparent"};">ESTATÍSTICAS</button>
       </div>
     </div>
 
