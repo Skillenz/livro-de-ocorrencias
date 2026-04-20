@@ -490,8 +490,8 @@ function render() {
 
   // ── table rows ──
   const colHeaders = ["DATA","HORA","TIPO DE OCORRÊNCIA","OPERADOR","DESCRIÇÃO",...(view==="log"?["AÇÕES"]:[])];
-  const thStyle = `padding:6px 10px;font-size:9px;font-weight:700;letter-spacing:.12em;color:${T.muted};text-align:left;border-bottom:1px solid ${T.border};white-space:nowrap;background:${T.thBg};`;
-  const thNarrow = `padding:6px 10px;font-size:9px;font-weight:700;letter-spacing:.12em;color:${T.muted};text-align:left;border-bottom:1px solid ${T.border};white-space:nowrap;background:${T.thBg};width:1%;`;
+  const thStyle = `padding:6px 10px;font-size:9px;font-weight:700;letter-spacing:.12em;color:#fff;text-align:left;border-bottom:1px solid ${T.border};white-space:nowrap;background:${T.navAc};`;
+  const thNarrow = `padding:6px 10px;font-size:9px;font-weight:700;letter-spacing:.12em;color:#fff;text-align:left;border-bottom:1px solid ${T.border};white-space:nowrap;background:${T.navAc};width:1%;`;
 
   const tableRows = rows.map((o,i)=>{
     const tp=getTipo(o.tipo);
@@ -560,7 +560,7 @@ function render() {
       <div style="display:flex;align-items:center;gap:11px;">
         <span style="font-size:24px;">📋</span>
         <div>
-          <div style="font-size:18px;font-weight:700;letter-spacing:.12em;color:${T.text};">LIVRO DE OCORRÊNCIAS</div>
+          <div style="font-size:18px;font-weight:700;letter-spacing:.12em;color:${T.navAc};">LIVRO DE OCORRÊNCIAS</div>
           <div style="font-size:9px;color:${T.muted};letter-spacing:.1em;margin-top:2px;">REGISTRO OPERACIONAL DE TURNO</div>
         </div>
       </div>
