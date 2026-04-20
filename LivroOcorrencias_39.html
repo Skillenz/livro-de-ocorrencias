@@ -123,8 +123,9 @@ const TEXT_COLORS = [
   { label:"Cinza",    value:"#64748b" },
 ];
 
-const STORAGE_KEY  = "livro_ocorrencias_v4";
-const STORAGE_DARK = "livro_dark_mode";
+const STORAGE_KEY      = "livro_ocorrencias_v4";
+const STORAGE_DARK     = "livro_dark_mode";
+const STORAGE_OPERADOR = "livro_operador_atual";
 
 // ── helpers ──────────────────────────────────────────────────
 const fmtDate = d   => { if(!d)return""; const[y,m,dd]=d.split("-"); return`${dd}/${m}/${y}`; };
@@ -158,11 +159,12 @@ let editId  = null;
 let inForm  = {};
 let savedAt = null;
 let activeColorPicker = null; // "form" | "inline" | null
+let operadorAtual = localStorage.getItem(STORAGE_OPERADOR) || "";
 
 const emptyForm = () => ({
   data: new Date().toISOString().slice(0,10),
   hora: new Date().toTimeString().slice(0,5),
-  tipo:"", descricao:"", operador:"",
+  tipo:"", descricao:"", operador:operadorAtual,
   _descHTML: "",    // rich html for form editor
 });
 let form = emptyForm();
@@ -449,6 +451,7 @@ function clearHF()     { hf={tipo:"",operador:"",de:"",ate:"",hora:""}; render()
 function setMonth(v)   { selectedMonth=v; render(); }
 function toggleDark()  { dark=!dark; localStorage.setItem(STORAGE_DARK,dark?"1":"0"); render(); }
 function togglePanel(name) { panelOpen = (panelOpen===name)?null:name; render(); }
+function setOperador(nome) { operadorAtual = nome; localStorage.setItem(STORAGE_OPERADOR, nome); form.operador = nome; render(); }
 
 // ── SELECT helper ──────────────────────────────────────────────
 function selectHTML(id, selected, options, extraStyle, onChange) {
@@ -590,6 +593,27 @@ function render() {
 
   <!-- TOP PANELS (never scroll) -->
   <div id="top-panels" style="flex-shrink:0;padding:0;background:${T.bg};z-index:100;">
+    <!-- Seletor de operador -->
+    ${view==="log" ? `
+    <div style="padding:8px 18px;background:${T.surface};border-bottom:1px solid ${T.border};">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:4px;">
+          <span style="font-size:9px;font-weight:700;color:${T.muted};">👤 OPERADOR:</span>
+          <span style="font-size:10px;font-weight:700;color:${T.navAc};">${operadorAtual||"—"}</span>
+        </div>
+        <button onclick="togglePanel('operador')" style="background:none;border:1px solid ${T.border};padding:3px 8px;border-radius:4px;cursor:pointer;font-size:9px;color:${T.muted};font-family:inherit;">TROCAR</button>
+      </div>
+      ${panelOpen==='operador' ? `
+      <div style="margin-top:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;">
+        ${[...new Set(records.map(o=>o.operador||'').filter(Boolean))].sort().map(nome=>`
+          <button onclick="setOperador('${esc(nome)}');panelOpen=null;render();" style="background:${operadorAtual===nome?T.navAcBg:'none'};border:1px solid ${operadorAtual===nome?T.navAc:T.border};padding:4px 8px;border-radius:4px;cursor:pointer;font-size:9px;color:${operadorAtual===nome?T.navAc:T.text};font-family:inherit;font-weight:${operadorAtual===nome?'700':'400'};">${esc(nome)}</button>
+        `).join('')}
+        <input type="text" id="novo-oper" placeholder="Novo..." style="background:${T.inputBg};border:1px solid ${T.border};padding:4px 8px;border-radius:4px;font-size:9px;color:${T.text};font-family:inherit;" onkeydown="if(event.key==='Enter'){setOperador(document.getElementById('novo-oper').value.trim()); panelOpen=null; render();}">
+      </div>
+      ` : ""}
+    </div>
+    ` : ""}
+
     <!-- Botões compactos -->
     <div style="padding:4px 18px;display:flex;gap:6px;align-items:center;justify-content:space-between;">
       <div style="display:flex;gap:6px;align-items:center;">
