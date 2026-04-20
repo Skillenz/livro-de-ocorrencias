@@ -334,7 +334,7 @@ function richEditorHTML(id, html, T, importancia) {
       <button style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 10px;cursor:pointer;font-family:inherit;color:${T.edTc};line-height:1;font-size:11px;"
         onmousedown="event.preventDefault();edExec('${id}','removeFormat');resetCPLabel('${id}')">Sem Formatação</button>
       <div style="width:1px;height:18px;background:${T.edBorder};margin:0 2px;"></div>
-      ${id.includes('form')?`<select id="${id}-import" onchange="onInput('${id}-import')" style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 8px;cursor:pointer;font-family:inherit;color:${T.edTc};font-size:11px;"><option value="nenhuma" ${importancia==="nenhuma"?"selected":""}>Nenhuma</option><option value="moderada" ${importancia==="moderada"?"selected":""}>Moderada</option><option value="urgente" ${importancia==="urgente"?"selected":""}>Urgente</option></select>`:''}
+      ${id.includes('form')?`<select id="${id}-import" onchange="onInput('${id}-import')" style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 8px;cursor:pointer;font-family:inherit;color:${T.edTc};font-size:11px;" title="Sinalizar importância"><option value="nenhuma" ${importancia==="nenhuma"?"selected":""}>🚩 SINALIZAR</option><option value="moderada" ${importancia==="moderada"?"selected":""}>🟨 Moderada</option><option value="urgente" ${importancia==="urgente"?"selected":""}>🔴 Urgente</option></select>`:''}
     </div>
     <div id="${id}" contenteditable="true" data-placeholder="Descreva detalhadamente a ocorrência, incluindo circunstâncias, envolvidos e medidas tomadas..."
       oninput="onEditorInput('${id}')"
