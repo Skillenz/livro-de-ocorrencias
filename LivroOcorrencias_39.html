@@ -588,7 +588,7 @@ function render() {
 
     ${view==="log" ? `
     <div style="background:${T.surface};border:1px solid ${T.border};border-radius:8px;margin-bottom:4px;overflow:hidden;">
-      <div onclick="togglePanel('nova')" style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;cursor:pointer;user-select:none;">
+      <div onclick="togglePanel('nova')" style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px;cursor:pointer;user-select:none;">
         <span style="font-size:10px;font-weight:700;letter-spacing:.1em;color:${T.muted};">➕  NOVA OCORRÊNCIA</span>
         <span style="font-size:11px;color:${T.muted};">${panelOpen==='nova'?'▲':'▼'}</span>
       </div>
@@ -607,7 +607,7 @@ function render() {
     </div>
 
     <div style="background:${T.surface};border:1px solid ${T.border};border-radius:8px;margin-bottom:4px;overflow:hidden;">
-      <div onclick="togglePanel('filtros')" style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;cursor:pointer;user-select:none;">
+      <div onclick="togglePanel('filtros')" style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px;cursor:pointer;user-select:none;">
         <span style="font-size:10px;font-weight:700;letter-spacing:.1em;color:${T.muted};">🔍  FILTRAR HISTÓRICO${(hf.tipo||hf.operador||hf.de||hf.ate||hf.hora)?' ●':''}</span>
         <span style="font-size:11px;color:${T.muted};">${panelOpen==='filtros'?'▲':'▼'}</span>
       </div>
