@@ -568,13 +568,10 @@ function render() {
     let dataTd, horaTd, tipoTd, operTd, descTd, actionTd="";
 
     if(isEdit){
-      dataTd=`<td style="${tdBase}white-space:nowrap;"><input id="ie-data" type="date" value="${esc(inForm.data)}" oninput="onInput('ie-data')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:12px;font-family:inherit;width:135px;"></td>`;
-      horaTd=`<td style="${tdBase}"><input id="ie-hora" type="time" value="${esc(inForm.hora)}" oninput="onInput('ie-hora')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:12px;font-family:inherit;width:100px;"></td>`;
-      const tipoSel=`<select id="ie-tipo" onchange="onInput('ie-tipo')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:11px;font-family:inherit;width:160px;cursor:pointer;">
-        <option value="">—</option>${TIPOS.map(t=>`<option value="${esc(t.label)}" ${t.label===inForm.tipo?"selected":""}>${esc(t.label)}</option>`).join("")}
-      </select>`;
-      tipoTd=`<td style="${tdBase}">${tipoSel}</td>`;
-      operTd=`<td style="${tdBase}"><input id="ie-oper" type="text" value="${esc(inForm.operador)}" placeholder="Operador" oninput="onInput('ie-oper')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:12px;font-family:inherit;width:135px;"></td>`;
+      dataTd=`<td style="${tdBase}white-space:nowrap;"><span style="font-family:monospace;font-size:11px;font-weight:600;color:${T.text};">${fmtDate(o.data)}</span></td>`;
+      horaTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="font-family:monospace;font-size:11px;font-weight:700;color:${T.text};">${esc(o.hora)||"—"}</span></td>`;
+      tipoTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;color:#fff;white-space:nowrap;background:${tp.color};">${esc(o.tipo)}</span></td>`;
+      operTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="font-size:10px;font-weight:700;color:${T.text};">${esc(o.operador)||"—"}</span></td>`;
       const impSel=`<select id="ie-import" onchange="onInput('ie-import')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:11px;font-family:inherit;width:100%;cursor:pointer;"><option value="nenhuma" ${inForm.importancia==="nenhuma"?"selected":""}>Nenhuma</option><option value="moderada" ${inForm.importancia==="moderada"?"selected":""}>Moderada</option><option value="urgente" ${inForm.importancia==="urgente"?"selected":""}>Urgente</option></select>`;
       descTd=`<td style="${tdBase}"><div>${impSel}</div>${richEditorHTML("inline-desc","",T)}</td>`;
       actionTd=`<td style="${tdBase}white-space:nowrap;">
