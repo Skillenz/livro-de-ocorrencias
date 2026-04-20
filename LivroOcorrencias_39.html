@@ -351,6 +351,17 @@ function handlePaste(event) {
   const text = (event.clipboardData || window.clipboardData).getData("text/plain");
   document.execCommand("insertText", false, text);
 }
+function insertTimeStamp() {
+  const timeInput = document.getElementById("ie-edittime");
+  const editor = document.getElementById("inline-desc");
+  if(timeInput && editor) {
+    const hora = timeInput.value || fmtNow().slice(0,5);
+    editor.focus();
+    const currentText = editor.innerHTML;
+    editor.innerHTML = `<div>${hora} – </div>${currentText}`;
+    inForm.editTime = hora;
+  }
+}
 function edExec(id, cmd, val) {
   const el=document.getElementById(id);
   if(!el)return;
@@ -576,14 +587,12 @@ function render() {
       tipoTd=`<td style="${tdBase}">${tipoSel}</td>`;
       operTd=`<td style="${tdBase}"><input id="ie-oper" type="text" value="${esc(inForm.operador)}" placeholder="Operador" oninput="onInput('ie-oper')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:12px;font-family:inherit;width:135px;"></td>`;
       const impSel=`<select id="ie-import" onchange="onInput('ie-import')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 7px;font-size:11px;font-family:inherit;width:100%;cursor:pointer;"><option value="nenhuma" ${inForm.importancia==="nenhuma"?"selected":""}>Nenhuma</option><option value="moderada" ${inForm.importancia==="moderada"?"selected":""}>Moderada</option><option value="urgente" ${inForm.importancia==="urgente"?"selected":""}>Urgente</option></select>`;
-      descTd=`<td style="${tdBase}"><div>${impSel}</div>${richEditorHTML("inline-desc","",T)}</td>`;
+      const horaEdit = inForm.editTime ? inForm.editTime.slice(0,5) : fmtNow().slice(0,5);
+      descTd=`<td style="${tdBase}"><div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;"><input id="ie-edittime" type="text" value="${horaEdit}" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:4px;color:${T.text};padding:4px 8px;font-size:11px;font-family:monospace;width:50px;cursor:pointer;" onkeydown="if(event.key==='Tab'){event.preventDefault();insertTimeStamp();}" title="Clique para editar ou pressione TAB para inserir"><span style="font-size:9px;color:${T.muted};">📝 Hora da atualização</span></div><div>${impSel}</div>${richEditorHTML("inline-desc","",T)}</td>`;
       actionTd=`<td style="${tdBase}white-space:nowrap;">
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <div style="display:flex;gap:5px;">
-            <button onclick="saveEdit()" style="background:#2563eb;color:#fff;border:none;border-radius:4px;padding:5px 10px;cursor:pointer;font-size:11px;font-family:inherit;font-weight:700;">✓</button>
-            <button onclick="cancelEdit()" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:5px 10px;cursor:pointer;font-size:11px;color:${T.muted};font-family:inherit;">✕</button>
-          </div>
-          <div style="font-size:9px;color:${T.muted};background:${T.surface2};padding:3px 6px;border-radius:3px;white-space:nowrap;">🕐 ${inForm.editTime||fmtNow()}</div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="saveEdit()" style="background:#2563eb;color:#fff;border:none;border-radius:4px;padding:5px 10px;cursor:pointer;font-size:11px;font-family:inherit;font-weight:700;">✓</button>
+          <button onclick="cancelEdit()" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:5px 10px;cursor:pointer;font-size:11px;color:${T.muted};font-family:inherit;">✕</button>
         </div></td>`;
     } else {
       dataTd=`<td style="${tdBase}white-space:nowrap;"><span style="font-family:monospace;font-size:11px;font-weight:600;color:${T.text};">${fmtDate(o.data)}</span></td>`;
