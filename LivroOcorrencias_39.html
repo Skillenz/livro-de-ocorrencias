@@ -33,6 +33,7 @@
     .imp-urgente { background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(239,68,68,.18) 2px, rgba(239,68,68,.18) 4px) !important; border-left: 4px solid #ef4444; }
 
     /* separadores de coluna e linha */
+    tbody tr { box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
     tbody tr td:last-child { border-right: none; }
 
     /* rich editor color option hover */
@@ -559,7 +560,7 @@ function render() {
     const tp=getTipo(o.tipo);
     const isEdit=editId===o.id;
     const rowBg=T.rEven;
-    const tdBase=`padding:6px 10px;border-right:1px solid ${T.border};border-bottom:none;vertical-align:top;box-shadow:inset 0 -1px 2px rgba(0,0,0,0.04);`;
+    const tdBase=`padding:6px 10px;border-right:1px solid ${T.border};border-bottom:none;vertical-align:top;box-shadow:inset 0 -2px 4px rgba(0,0,0,0.08);`;
 
     let dataTd, horaTd, tipoTd, operTd, descTd, actionTd="";
 
