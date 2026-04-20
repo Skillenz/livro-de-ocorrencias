@@ -302,6 +302,15 @@ function richEditorHTML(id, html, T) {
   return `
   <div style="border:1px solid ${T.edBorder};border-radius:6px;background:${T.edBg};">
     <div style="display:flex;align-items:center;gap:4px;padding:4px 8px;border-bottom:1px solid ${T.edBorder};background:${T.edTbBg};flex-wrap:wrap;">
+      <select onchange="edExec('${id}','fontSize',this.value);this.value='0';" style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:2px 5px;cursor:pointer;font-family:inherit;color:${T.edTc};font-size:10px;line-height:1;">
+        <option value="0">Tamanho</option>
+        <option value="1">P</option>
+        <option value="2">P</option>
+        <option value="3">Normal</option>
+        <option value="4">Grande</option>
+        <option value="5">Maior</option>
+        <option value="6">Muito Grande</option>
+      </select>
       <button style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 9px;cursor:pointer;font-family:inherit;color:${T.edTc};line-height:1;" onmousedown="event.preventDefault();edExec('${id}','bold')"><b>B</b></button>
       <button style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 9px;cursor:pointer;font-family:inherit;color:${T.edTc};line-height:1;" onmousedown="event.preventDefault();edExec('${id}','italic')"><i>I</i></button>
       <button style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 9px;cursor:pointer;font-family:inherit;color:${T.edTc};line-height:1;" onmousedown="event.preventDefault();edExec('${id}','underline')"><u>U</u></button>
@@ -661,12 +670,6 @@ function render() {
         <button onclick="togglePanel('rfiltros')" style="background:none;border:1px solid ${T.border};padding:3px 8px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:700;color:${T.muted};font-family:inherit;user-select:none;">🔍 PERÍODO</button>
         <button onclick="event.stopPropagation();exportCSV()" style="background:none;border:1px solid ${T.border};color:${T.muted};border-radius:4px;padding:3px 8px;font-size:9px;font-weight:700;cursor:pointer;font-family:inherit;">⬇ CSV</button>
         `}
-        <select onchange="setFontSize(this.value)" style="background:${T.inputBg};border:1px solid ${T.border};padding:3px 6px;border-radius:4px;font-size:9px;color:${T.text};font-family:inherit;cursor:pointer;">
-          <option value="12" ${fontSize==="12"?"selected":""}>Pequeno</option>
-          <option value="14" ${fontSize==="14"?"selected":""}>Normal</option>
-          <option value="16" ${fontSize==="16"?"selected":""}>Grande</option>
-          <option value="18" ${fontSize==="18"?"selected":""}>Muito Grande</option>
-        </select>
       </div>
       <div style="display:flex;gap:1px;">
         <button onclick="setView('log')" style="background:none;border:none;font-size:9px;font-weight:700;letter-spacing:.08em;padding:3px 10px;cursor:pointer;font-family:inherit;border-radius:4px;color:${view==="log"?T.navAc:T.muted};background:${view==="log"?T.navAcBg:"transparent"};border-bottom:2px solid ${view==="log"?T.navAc:"transparent"};">REGISTRO</button>
