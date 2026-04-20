@@ -614,7 +614,7 @@ function render() {
   const mkOperSel=(id,val)=>{ const names=[...new Set(records.map(o=>o.operador||'').filter(Boolean))].sort(); const opts=names.map(n=>`<option value="${esc(n)}" ${n===val?'selected':''}>${esc(n)}</option>`).join(''); return `<select id="${id}" onchange="onInput('${id}')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:4px 6px;font-size:11px;font-family:inherit;width:100%;cursor:pointer;"><option value="">Todos</option>${opts}</select>`; };
 
   const INP=(id,type,val,ph,extra)=>`<input id="${id}" type="${type}" value="${esc(val)}" placeholder="${esc(ph||"")}" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 8px;font-size:11px;font-family:inherit;width:100%;${extra||""}" oninput="onInput('${id}')">`;
-  const LBL=txt=>`<label style="font-size:9px;font-weight:700;letter-spacing:.1em;color:${T.muted};margin-bottom:3px;display:block;">${txt}</label>`;
+  const LBL=txt=>`<label style="font-size:9px;font-weight:700;letter-spacing:.1em;color:${T.muted};margin-bottom:3px;display:block;white-space:nowrap;">${txt}</label>`;
   const CARD=content=>`<div class="anim" style="background:${T.surface};border:1px solid ${T.border};border-radius:8px;padding:8px 10px;margin-bottom:6px;box-shadow:${dark?"0 2px 8px rgba(0,0,0,.3)":"0 1px 4px rgba(0,0,0,.07)"};">${content}</div>`;
 
   // ── full HTML ──
