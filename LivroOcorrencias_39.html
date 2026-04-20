@@ -555,9 +555,9 @@ function render() {
         </div></td>`;
     } else {
       dataTd=`<td style="${tdBase}white-space:nowrap;"><span style="font-family:monospace;font-size:11px;font-weight:600;color:${T.text};">${fmtDate(o.data)}</span></td>`;
-      horaTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="font-family:monospace;font-size:11px;color:${T.muted};">${esc(o.hora)||"—"}</span></td>`;
+      horaTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="font-family:monospace;font-size:11px;font-weight:700;color:${T.navAc};">${esc(o.hora)||"—"}</span></td>`;
       tipoTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;color:#fff;white-space:nowrap;background:${tp.color};">${esc(o.tipo)}</span></td>`;
-      operTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="font-size:10px;color:${T.muted};">${esc(o.operador)||"—"}</span></td>`;
+      operTd=`<td style="${tdBase}white-space:nowrap;width:1%;"><span style="font-size:10px;font-weight:700;color:${T.navAc};">${esc(o.operador)||"—"}</span></td>`;
       descTd=`<td style="${tdBase}font-size:12px;line-height:1.5;min-width:200px;">${o.descricao||"—"}</td>`;
       if(view==="log") {
         actionTd=`<td style="${tdBase}white-space:nowrap;">
