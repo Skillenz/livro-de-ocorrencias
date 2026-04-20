@@ -295,7 +295,7 @@ function inp(id, type, val, placeholder, extraStyle) {
   return `<input id="${id}" type="${type}" value="${esc(val)}" placeholder="${esc(placeholder||"")}" style="${base}" oninput="onInput('${id}')">`;
 }
 
-function richEditorHTML(id, html, T) {
+function richEditorHTML(id, html, T, importancia) {
   const colorBtns = TEXT_COLORS.map(c=>`
     <button class="copt" onmousedown="event.preventDefault();applyColor('${id}',${c.value?`'${c.value}'`:'null'})"
       style="display:flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:5px 5px;border-radius:4px;font-size:12px;font-family:inherit;color:${T.edTc};width:100%;text-align:left;">
@@ -333,6 +333,8 @@ function richEditorHTML(id, html, T) {
       <div style="width:1px;height:18px;background:${T.edBorder};margin:0 2px;"></div>
       <button style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 10px;cursor:pointer;font-family:inherit;color:${T.edTc};line-height:1;font-size:11px;"
         onmousedown="event.preventDefault();edExec('${id}','removeFormat');resetCPLabel('${id}')">Sem Formatação</button>
+      <div style="width:1px;height:18px;background:${T.edBorder};margin:0 2px;"></div>
+      ${id.includes('form')?`<select id="${id}-import" onchange="onInput('${id}-import')" style="background:none;border:1px solid ${T.edBorder};border-radius:4px;padding:3px 8px;cursor:pointer;font-family:inherit;color:${T.edTc};font-size:11px;"><option value="nenhuma" ${importancia==="nenhuma"?"selected":""}>Nenhuma</option><option value="moderada" ${importancia==="moderada"?"selected":""}>Moderada</option><option value="urgente" ${importancia==="urgente"?"selected":""}>Urgente</option></select>`:''}
     </div>
     <div id="${id}" contenteditable="true" data-placeholder="Descreva detalhadamente a ocorrência, incluindo circunstâncias, envolvidos e medidas tomadas..."
       oninput="onEditorInput('${id}')"
@@ -395,6 +397,7 @@ function onInput(id) {
   if(id==="f-tipo")    { form.tipo=v; render(); return; }
   if(id==="f-oper")    { form.operador=v; return; }
   if(id==="f-import")  { form.importancia=v; return; }
+  if(id==="form-desc-import") { form.importancia=v; return; }
   // history filters
   if(id==="hf-tipo")   { hf.tipo=v; render(); return; }
   if(id==="hf-oper")   { hf.operador=v; render(); return; }
@@ -695,8 +698,7 @@ function render() {
         <div>${LBL("OPERADOR")}${INP("f-oper","text",form.operador,"Nome do operador")}</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 130px;gap:8px;margin-top:8px;align-items:start;">
-        <div style="grid-column:1;">${LBL("DESCRIÇÃO DA OCORRÊNCIA")}${richEditorHTML("form-desc",form.descricao,T)}</div>
-        <div style="display:flex;flex-direction:column;">${LBL("IMPORTÂNCIA")}<select id="f-import" onchange="onInput('f-import')" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:5px;color:${T.text};padding:5px 8px;font-size:11px;font-family:inherit;width:100%;cursor:pointer;flex:1;"><option value="nenhuma" ${form.importancia==="nenhuma"?"selected":""}>Nenhuma</option><option value="moderada" ${form.importancia==="moderada"?"selected":""}>Moderada</option><option value="urgente" ${form.importancia==="urgente"?"selected":""}>Urgente</option></select></div>
+        <div style="grid-column:1/-1;">${LBL("DESCRIÇÃO DA OCORRÊNCIA")}${richEditorHTML("form-desc",form.descricao,T,form.importancia)}</div>
       </div>
       <div style="margin-top:8px;display:flex;justify-content:flex-end;">
         <button onclick="addRecord()" style="background:${T.navAc};color:#fff;border:none;border-radius:5px;padding:6px 16px;font-size:9px;font-weight:700;cursor:pointer;font-family:inherit;">REGISTRAR</button>
