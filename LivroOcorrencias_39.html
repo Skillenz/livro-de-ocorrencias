@@ -490,11 +490,10 @@ function setFontSize(size) { fontSize = size; localStorage.setItem(STORAGE_FONTS
 function setOperador(nome) { operadorAtual = nome; localStorage.setItem(STORAGE_OPERADOR, nome); form.operador = nome; render(); }
 function deleteOperador(nome) {
   if(confirm(`Deletar operador "${nome}"?`)) {
-    records = records.filter(r => r.operador !== nome);
     const list = loadOperadores().filter(o => o !== nome);
     saveOperadores(list);
     if(operadorAtual === nome) { operadorAtual = ""; localStorage.setItem(STORAGE_OPERADOR, ""); form.operador = ""; }
-    save(records); render();
+    render();
   }
 }
 function addOperador() {
