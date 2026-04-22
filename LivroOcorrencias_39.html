@@ -664,6 +664,11 @@ function render() {
           <div style="font-size:9px;color:${T.muted};letter-spacing:.1em;margin-top:2px;">REGISTRO OPERACIONAL DE TURNO</div>
         </div>
       </div>
+      <!-- RELÓGIO EM TEMPO REAL -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 14px;background:${T.surface2};border:1px solid ${T.border};border-radius:8px;min-width:150px;">
+        <div id="relogio-hora" style="font-family:'Courier New',monospace;font-size:20px;font-weight:700;color:${T.navAc};letter-spacing:.05em;line-height:1;">--:--:--</div>
+        <div id="relogio-data" style="font-size:9px;font-weight:600;color:${T.muted};letter-spacing:.08em;margin-top:3px;text-transform:uppercase;">—</div>
+      </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <span style="font-size:9px;color:${T.muted};display:flex;align-items:center;gap:4px;">
           <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;"></span>
@@ -852,11 +857,32 @@ function render() {
       if(el && !el.innerHTML) el.innerHTML=inForm.descricao||"";
     },0);
   }
+  // atualizar relógio imediatamente após re-render
+  if(typeof updateRelogio === 'function') updateRelogio();
 }
+
+// ── RELÓGIO EM TEMPO REAL ─────────────────────────────────────
+function updateRelogio() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  const dias = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  const dia = dias[now.getDay()];
+  const dd = String(now.getDate()).padStart(2,'0');
+  const mo = String(now.getMonth()+1).padStart(2,'0');
+  const yyyy = now.getFullYear();
+  const elH = document.getElementById('relogio-hora');
+  const elD = document.getElementById('relogio-data');
+  if(elH) elH.textContent = `${hh}:${mm}:${ss}`;
+  if(elD) elD.textContent = `${dia}, ${dd}/${mo}/${yyyy}`;
+}
+setInterval(updateRelogio, 1000);
 
 // ── INIT ──────────────────────────────────────────────────────
 document.documentElement.style.fontSize = fontSize + "px";
 render();
+updateRelogio();
 // mark as saved on load if data exists
 if(records.length>0) { savedAt=fmtNow(); }
 </script>
