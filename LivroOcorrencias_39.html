@@ -278,6 +278,19 @@ function saveBackup() {
   a.click(); URL.revokeObjectURL(a.href);
   toast("Backup JSON salvo!");
 }
+
+// Auto-save a cada 2 horas (arquivo com nome fixo para sobrepor anterior)
+function autoSaveBackup() {
+  if(records.length === 0) return;
+  const blob = new Blob([JSON.stringify(records,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "livro_ocorrencias_auto_backup.json";
+  a.click(); URL.revokeObjectURL(a.href);
+  const now = new Date();
+  localStorage.setItem("livro_ultimo_auto_backup", now.toISOString());
+  toast("Auto-backup salvo!");
+}
 function importFile(e) {
   const f=e.target.files[0]; if(!f)return;
   const r=new FileReader();
@@ -885,6 +898,8 @@ render();
 updateRelogio();
 // mark as saved on load if data exists
 if(records.length>0) { savedAt=fmtNow(); }
+// Auto-backup a cada 2 horas
+setInterval(autoSaveBackup, 2 * 60 * 60 * 1000);
 </script>
 </body>
 </html>
