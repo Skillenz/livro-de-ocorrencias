@@ -532,6 +532,8 @@ function addOperador() {
   if(nome) {
     const list = loadOperadores();
     if(!list.includes(nome)) { list.push(nome); saveOperadores(list); }
+    const deleted = loadDeletedOperadores().filter(o => o !== nome);
+    saveDeletedOperadores(deleted);
     setOperador(nome);
     document.getElementById('novo-oper').value = "";
     panelOpen = null;
