@@ -51,8 +51,6 @@
     }
     .anim { animation: su .2s ease; }
 
-    /* icons visibility in dark mode */
-    .icon { filter: brightness(1.1) drop-shadow(0 0 1px rgba(255,255,255,0.3)); }
 
     /* layout shell */
     #shell {
@@ -598,8 +596,8 @@ function render() {
       if(view==="log") {
         actionTd=`<td style="${tdBase}white-space:nowrap;">
           <div style="display:flex;gap:5px;">
-            <button onclick="startEdit('${o.id}')" title="Editar" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 6px;cursor:pointer;font-size:12px;"><span class="icon">✏️</span></button>
-            <button onclick="confirmDelete('${o.id}')" title="Excluir" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 6px;cursor:pointer;font-size:12px;"><span class="icon">🗑️</span></button>
+            <button onclick="startEdit('${o.id}')" title="Editar" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 6px;cursor:pointer;font-size:12px;color:${T.text};">✎</button>
+            <button onclick="confirmDelete('${o.id}')" title="Excluir" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 6px;cursor:pointer;font-size:12px;color:${T.text};">✕</button>
           </div></td>`;
       }
     }
@@ -634,7 +632,7 @@ function render() {
   <div style="flex-shrink:0;background:${T.header};border-bottom:1px solid ${T.border};box-shadow:${dark?"0 2px 8px rgba(0,0,0,.4)":"0 1px 4px rgba(0,0,0,.08)"};z-index:200;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;flex-wrap:wrap;gap:6px;">
       <div style="display:flex;align-items:center;gap:11px;">
-        <span style="font-size:20px;" class="icon">📋</span>
+        <span style="font-size:16px;color:${T.text};">≡</span>
         <div>
           <div style="font-size:16px;font-weight:700;letter-spacing:.12em;color:${T.navAc};">LIVRO DE OCORRÊNCIAS</div>
           <div style="font-size:9px;color:${T.muted};letter-spacing:.1em;margin-top:2px;">REGISTRO OPERACIONAL DE TURNO</div>
@@ -646,10 +644,10 @@ function render() {
           ${savedAt?"Salvo às "+savedAt:"Pronto"}
         </span>
         <span style="font-size:10px;background:${T.surface2};color:${T.muted};padding:2px 9px;border-radius:4px;border:1px solid ${T.border};">${records.length} reg.</span>
-        <button onclick="toggleDark()" style="background:${dark?"#38bdf8":"#1e293b"};border:none;border-radius:16px;padding:4px 13px;cursor:pointer;font-size:10px;font-weight:700;color:${dark?"#0f172a":"#fff"};font-family:inherit;"><span class="icon">${dark?"☀":"🌙"}</span> ${dark?"Claro":"Escuro"}</button>
-        <button onclick="saveBackup()" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 8px;cursor:pointer;font-size:10px;color:${T.muted};font-family:inherit;"><span class="icon">💾</span> Backup</button>
+        <button onclick="toggleDark()" style="background:${dark?"#38bdf8":"#1e293b"};border:none;border-radius:16px;padding:4px 13px;cursor:pointer;font-size:10px;font-weight:700;color:${dark?"#0f172a":"#fff"};font-family:inherit;">◯ ${dark?"Claro":"Escuro"}</button>
+        <button onclick="saveBackup()" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 8px;cursor:pointer;font-size:10px;color:${T.muted};font-family:inherit;">⬇ Backup</button>
         <label style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 8px;cursor:pointer;font-size:10px;color:${T.muted};font-family:inherit;display:inline-flex;gap:3px;align-items:center;">
-          <span class="icon">📂</span> Importar<input type="file" accept=".json" style="display:none;" onchange="importFile(event)">
+          ⬆ Importar<input type="file" accept=".json" style="display:none;" onchange="importFile(event)">
         </label>
       </div>
     </div>
@@ -661,7 +659,7 @@ function render() {
     ${view==="log" ? `
     <div style="padding:6px 12px;background:${T.surface};border-bottom:1px solid ${T.border};display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
       <div style="display:flex;align-items:center;gap:4px;">
-        <span style="font-size:9px;font-weight:700;color:${T.muted};"><span class="icon">👤</span> OPERADOR EM TURNO:</span>
+        <span style="font-size:9px;font-weight:700;color:${T.muted};">◯ OPERADOR EM TURNO:</span>
         <span style="font-size:10px;font-weight:700;color:${T.navAc};">${operadorAtual||"—"}</span>
       </div>
       <button onclick="togglePanel('operador')" style="background:none;border:1px solid ${T.border};padding:3px 6px;border-radius:4px;cursor:pointer;font-size:9px;color:${T.muted};font-family:inherit;">ALTERAR</button>
@@ -690,11 +688,11 @@ function render() {
     <div style="padding:3px 12px;display:flex;gap:5px;align-items:center;justify-content:space-between;">
       <div style="display:flex;gap:6px;align-items:center;">
         ${view==="log" ? `
-        <button onclick="togglePanel('nova')" style="background:${T.navAc};border:none;padding:5px 11px;border-radius:5px;cursor:pointer;font-size:10px;font-weight:700;color:#fff;font-family:inherit;user-select:none;"><span class="icon">➕</span> NOVA OCORRÊNCIA</button>
+        <button onclick="togglePanel('nova')" style="background:${T.navAc};border:none;padding:5px 11px;border-radius:5px;cursor:pointer;font-size:10px;font-weight:700;color:#fff;font-family:inherit;user-select:none;">+ NOVA OCORRÊNCIA</button>
         <button onclick="togglePanel('filtros')" style="background:none;border:1px solid ${T.border};padding:3px 6px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:700;color:${T.muted};font-family:inherit;user-select:none;">🔍 FILTRAR${(hf.tipo||hf.operador||hf.de||hf.ate||hf.hora)?' ●':''}</button>
         ` : `
         <button onclick="togglePanel('rfiltros')" style="background:none;border:1px solid ${T.border};padding:3px 6px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:700;color:${T.muted};font-family:inherit;user-select:none;">🔍 PERÍODO</button>
-        <button onclick="event.stopPropagation();exportCSV()" style="background:none;border:1px solid ${T.border};color:${T.muted};border-radius:4px;padding:3px 8px;font-size:9px;font-weight:700;cursor:pointer;font-family:inherit;"><span class="icon">⬇</span> CSV</button>
+        <button onclick="event.stopPropagation();exportCSV()" style="background:none;border:1px solid ${T.border};color:${T.muted};border-radius:4px;padding:3px 8px;font-size:9px;font-weight:700;cursor:pointer;font-family:inherit;">⬇ CSV</button>
         `}
       </div>
       <div style="display:flex;gap:1px;">
@@ -788,7 +786,7 @@ function render() {
     <div style="flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
       ${rows.length===0 ? `
         <div style="text-align:center;padding:40px 16px;color:${T.faint};">
-          <div style="font-size:28px;margin-bottom:8px;" class="icon">📂</div>
+          <div style="font-size:28px;margin-bottom:8px;color:${T.muted};">∼</div>
           <div style="font-size:11px;">Nenhuma ocorrência encontrada</div>
         </div>` : `
         <table style="width:100%;table-layout:fixed;border-collapse:collapse;">
