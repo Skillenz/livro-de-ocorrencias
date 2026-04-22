@@ -448,14 +448,14 @@ function addRecord() {
 
 function startEdit(id) {
   const o=records.find(r=>r.id===id); if(!o)return;
-  const tableZone=document.getElementById('table-zone');
-  const scrollPos=tableZone?tableZone.scrollTop:0;
+  const rowsScroll=document.getElementById('rows-scroll');
+  const scrollPos=rowsScroll?rowsScroll.scrollTop:0;
   editId=id;
   inForm={data:o.data,hora:o.hora,tipo:o.tipo,descricao:o.descricao,operador:o.operador||"",importancia:o.importancia||"nenhuma"};
   render();
-  if(tableZone) setTimeout(()=>tableZone.scrollTop=scrollPos,0);
-  // set rich editor content after render
   setTimeout(()=>{
+    const rs=document.getElementById('rows-scroll');
+    if(rs) rs.scrollTop=scrollPos;
     const el=document.getElementById("inline-desc");
     if(el){ el.innerHTML=inForm.descricao||""; }
   },0);
@@ -466,10 +466,18 @@ function saveEdit() {
   if(!inForm.data||!inForm.tipo||!strip(inForm.descricao)){
     toast("Preencha todos os campos.","err"); return;
   }
+  const rowsScroll=document.getElementById('rows-scroll');
+  const scrollPos=rowsScroll?rowsScroll.scrollTop:0;
   records=records.map(o=>o.id===editId?{...o,...inForm,updatedAt:new Date().toISOString()}:o);
   editId=null; persist(); toast("Atualizado."); render();
+  setTimeout(()=>{ const rs=document.getElementById('rows-scroll'); if(rs) rs.scrollTop=scrollPos; },0);
 }
-function cancelEdit() { editId=null; render(); }
+function cancelEdit() {
+  const rowsScroll=document.getElementById('rows-scroll');
+  const scrollPos=rowsScroll?rowsScroll.scrollTop:0;
+  editId=null; render();
+  setTimeout(()=>{ const rs=document.getElementById('rows-scroll'); if(rs) rs.scrollTop=scrollPos; },0);
+}
 
 let pendingDelete=null;
 function confirmDelete(id) {
@@ -786,7 +794,7 @@ function render() {
     </div>
 
     <!-- SCROLLABLE ROWS SECTION -->
-    <div style="flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
+    <div id="rows-scroll" style="flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
       ${rows.length===0 ? `
         <div style="text-align:center;padding:40px 16px;color:${T.faint};">
           <div style="font-size:28px;margin-bottom:8px;color:${T.muted};">∼</div>
