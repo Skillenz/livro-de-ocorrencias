@@ -448,14 +448,18 @@ function addRecord() {
 
 function startEdit(id) {
   const o=records.find(r=>r.id===id); if(!o)return;
-  const rowsScroll=document.getElementById('rows-scroll');
-  const scrollPos=rowsScroll?rowsScroll.scrollTop:0;
   editId=id;
   inForm={data:o.data,hora:o.hora,tipo:o.tipo,descricao:o.descricao,operador:o.operador||"",importancia:o.importancia||"nenhuma"};
   render();
   setTimeout(()=>{
+    const row=document.getElementById('row-edit');
     const rs=document.getElementById('rows-scroll');
-    if(rs) rs.scrollTop=scrollPos;
+    if(row && rs){
+      const rowTop=row.offsetTop;
+      const rowHeight=row.offsetHeight;
+      const containerHeight=rs.clientHeight;
+      rs.scrollTop=rowTop-(containerHeight/2)+(rowHeight/2);
+    }
     const el=document.getElementById("inline-desc");
     if(el){
       el.innerHTML=inForm.descricao||"";
@@ -623,7 +627,7 @@ function render() {
     }
 
     const impClass = o.importancia==="urgente"?"imp-urgente":o.importancia==="moderada"?"imp-moderada":"";
-    return `<tr class="rhl ${impClass}" style="background:${rowBg};">${dataTd}${horaTd}${tipoTd}${operTd}${descTd}${actionTd}</tr>`;
+    return `<tr class="rhl ${impClass}" ${isEdit?'id="row-edit"':''} style="background:${rowBg};">${dataTd}${horaTd}${tipoTd}${operTd}${descTd}${actionTd}</tr>`;
   }).join("");
 
   // ── tipo selector for form ──
