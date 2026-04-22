@@ -14,17 +14,10 @@
     }
     * { box-sizing: border-box; }
 
-    /* scrollbar - mais visível para facilitar o uso */
-    ::-webkit-scrollbar { width: 10px; height: 10px; }
-    ::-webkit-scrollbar-track { background: rgba(100,116,139,0.1); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-
-    /* scrollbar permanente e mais destacada na lista de ocorrências */
-    #rows-scroll { scrollbar-width: thin; scrollbar-color: #64748b rgba(100,116,139,0.15); }
-    #rows-scroll::-webkit-scrollbar { width: 12px; }
-    #rows-scroll::-webkit-scrollbar-track { background: rgba(100,116,139,0.15); }
-    #rows-scroll::-webkit-scrollbar-thumb { background: #64748b; min-height: 40px; }
+    /* scrollbar - otimizado para telas pequenas */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 3px; }
 
     /* focus */
     input:focus, select:focus {
@@ -144,7 +137,6 @@ const STORAGE_OPERADOR  = "livro_operador_atual";
 const STORAGE_OPERADORES = "livro_operadores_lista";
 const STORAGE_FONTSIZE  = "livro_font_size";
 const STORAGE_OPERADORES_DELETED = "livro_operadores_deletados";
-const STORAGE_RESOLUCAO = "livro_resolucao";
 
 // ── helpers ──────────────────────────────────────────────────
 const fmtDate = d   => { if(!d)return""; const[y,m,dd]=d.split("-"); return`${dd}/${m}/${y}`; };
@@ -187,7 +179,6 @@ let savedAt = null;
 let activeColorPicker = null; // "form" | "inline" | null
 let operadorAtual = localStorage.getItem(STORAGE_OPERADOR) || "";
 let fontSize = localStorage.getItem(STORAGE_FONTSIZE) || "14";
-let resolucao = localStorage.getItem(STORAGE_RESOLUCAO) || "auto";
 
 const emptyForm = () => ({
   data: new Date().toISOString().slice(0,10),
@@ -524,19 +515,6 @@ function setMonth(v)   { selectedMonth=v; render(); }
 function toggleDark()  { dark=!dark; localStorage.setItem(STORAGE_DARK,dark?"1":"0"); render(); }
 function togglePanel(name) { panelOpen = (panelOpen===name)?null:name; render(); }
 function setFontSize(size) { fontSize = size; localStorage.setItem(STORAGE_FONTSIZE, size); document.documentElement.style.fontSize = size + "px"; render(); }
-function setResolucao(r) { resolucao = r; localStorage.setItem(STORAGE_RESOLUCAO, r); applyResolution(); render(); }
-function applyResolution() {
-  const zooms = {
-    "auto":      1.00,
-    "1024x768":  0.85,
-    "1280x1024": 1.00,
-    "1600x900":  1.05,
-    "1920x1080": 1.20,
-    "2560x1440": 1.45
-  };
-  const z = zooms[resolucao] !== undefined ? zooms[resolucao] : 1.00;
-  document.body.style.zoom = z;
-}
 function setOperador(nome) { operadorAtual = nome; localStorage.setItem(STORAGE_OPERADOR, nome); form.operador = nome; render(); }
 function deleteOperador(nome) {
   if(confirm(`Deletar operador "${nome}"?`)) {
@@ -695,34 +673,12 @@ function render() {
         <label style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 8px;cursor:pointer;font-size:10px;color:${T.muted};font-family:inherit;display:inline-flex;gap:3px;align-items:center;">
           ⬆ Importar<input type="file" accept=".json" style="display:none;" onchange="importFile(event)">
         </label>
-        <button onclick="togglePanel('config')" title="Configurações" style="background:none;border:1px solid ${T.border};border-radius:4px;padding:3px 8px;cursor:pointer;font-size:12px;color:${T.muted};font-family:inherit;line-height:1;">⚙</button>
       </div>
     </div>
   </div>
 
   <!-- TOP PANELS (never scroll) -->
   <div id="top-panels" style="flex-shrink:0;padding:0;background:${T.bg};z-index:100;">
-    <!-- Painel de Configurações -->
-    ${panelOpen==='config' ? `
-    <div style="padding:10px 12px;background:${T.surface};border-bottom:1px solid ${T.border};">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <span style="font-size:10px;font-weight:700;letter-spacing:.1em;color:${T.muted};">⚙ CONFIGURAÇÕES</span>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <label style="font-size:9px;font-weight:700;letter-spacing:.1em;color:${T.muted};white-space:nowrap;">RESOLUÇÃO DE TELA:</label>
-          <select onchange="setResolucao(this.value)" style="background:${T.inputBg};border:1px solid ${T.border};border-radius:4px;color:${T.text};padding:3px 6px;font-size:10px;font-family:inherit;cursor:pointer;">
-            <option value="auto" ${resolucao==="auto"?"selected":""}>Padrão (automático)</option>
-            <option value="1024x768" ${resolucao==="1024x768"?"selected":""}>1024 × 768</option>
-            <option value="1280x1024" ${resolucao==="1280x1024"?"selected":""}>1280 × 1024</option>
-            <option value="1600x900" ${resolucao==="1600x900"?"selected":""}>1600 × 900</option>
-            <option value="1920x1080" ${resolucao==="1920x1080"?"selected":""}>1920 × 1080</option>
-            <option value="2560x1440" ${resolucao==="2560x1440"?"selected":""}>2560 × 1440</option>
-          </select>
-        </div>
-        <button onclick="togglePanel(null)" style="background:none;border:1px solid ${T.border};color:${T.muted};border-radius:4px;padding:3px 8px;font-size:9px;cursor:pointer;font-family:inherit;margin-left:auto;">✕ Fechar</button>
-      </div>
-      <div style="margin-top:6px;font-size:8px;color:${T.faint};font-style:italic;">Ajusta o tamanho da interface para melhor visualização na resolução selecionada.</div>
-    </div>
-    ` : ''}
     <!-- Operador em turno -->
     ${view==="log" ? `
     <div style="padding:6px 12px;background:${T.surface};border-bottom:1px solid ${T.border};display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
@@ -851,7 +807,7 @@ function render() {
     </div>
 
     <!-- SCROLLABLE ROWS SECTION -->
-    <div id="rows-scroll" style="flex:1 1 0;min-height:0;overflow-y:scroll;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
+    <div id="rows-scroll" style="flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
       ${rows.length===0 ? `
         <div style="text-align:center;padding:40px 16px;color:${T.faint};">
           <div style="font-size:28px;margin-bottom:8px;color:${T.muted};">∼</div>
@@ -898,7 +854,6 @@ function render() {
 
 // ── INIT ──────────────────────────────────────────────────────
 document.documentElement.style.fontSize = fontSize + "px";
-applyResolution();
 render();
 // mark as saved on load if data exists
 if(records.length>0) { savedAt=fmtNow(); }
