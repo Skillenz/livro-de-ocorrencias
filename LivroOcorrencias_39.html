@@ -448,9 +448,12 @@ function addRecord() {
 
 function startEdit(id) {
   const o=records.find(r=>r.id===id); if(!o)return;
+  const tableZone=document.getElementById('table-zone');
+  const scrollPos=tableZone?tableZone.scrollTop:0;
   editId=id;
   inForm={data:o.data,hora:o.hora,tipo:o.tipo,descricao:o.descricao,operador:o.operador||"",importancia:o.importancia||"nenhuma"};
   render();
+  if(tableZone) setTimeout(()=>tableZone.scrollTop=scrollPos,0);
   // set rich editor content after render
   setTimeout(()=>{
     const el=document.getElementById("inline-desc");
