@@ -20,6 +20,12 @@
     ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); }
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
+    /* scrollbar permanente e mais destacada na lista de ocorrências */
+    #rows-scroll { scrollbar-width: thin; scrollbar-color: #64748b rgba(100,116,139,0.15); }
+    #rows-scroll::-webkit-scrollbar { width: 12px; }
+    #rows-scroll::-webkit-scrollbar-track { background: rgba(100,116,139,0.15); }
+    #rows-scroll::-webkit-scrollbar-thumb { background: #64748b; min-height: 40px; }
+
     /* focus */
     input:focus, select:focus {
       outline: none;
@@ -845,7 +851,7 @@ function render() {
     </div>
 
     <!-- SCROLLABLE ROWS SECTION -->
-    <div id="rows-scroll" style="flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
+    <div id="rows-scroll" style="flex:1 1 0;min-height:0;overflow-y:scroll;overflow-x:auto;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid ${T.border};">
       ${rows.length===0 ? `
         <div style="text-align:center;padding:40px 16px;color:${T.faint};">
           <div style="font-size:28px;margin-bottom:8px;color:${T.muted};">∼</div>
