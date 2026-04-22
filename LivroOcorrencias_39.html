@@ -457,7 +457,16 @@ function startEdit(id) {
     const rs=document.getElementById('rows-scroll');
     if(rs) rs.scrollTop=scrollPos;
     const el=document.getElementById("inline-desc");
-    if(el){ el.innerHTML=inForm.descricao||""; }
+    if(el){
+      el.innerHTML=inForm.descricao||"";
+      el.focus();
+      const range=document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      const sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
   },0);
 }
 function saveEdit() {
