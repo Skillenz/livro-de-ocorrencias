@@ -135,6 +135,7 @@ const STORAGE_DARK      = "livro_dark_mode";
 const STORAGE_OPERADOR  = "livro_operador_atual";
 const STORAGE_OPERADORES = "livro_operadores_lista";
 const STORAGE_FONTSIZE  = "livro_font_size";
+const STORAGE_OPERADORES_DELETED = "livro_operadores_deletados";
 
 // ── helpers ──────────────────────────────────────────────────
 const fmtDate = d   => { if(!d)return""; const[y,m,dd]=d.split("-"); return`${dd}/${m}/${y}`; };
@@ -162,7 +163,9 @@ function load() {
 // ── helpers operadores ────────────────────────────────────────
 function loadOperadores() { try { const o=localStorage.getItem(STORAGE_OPERADORES); return o?JSON.parse(o):[]; } catch { return []; } }
 function saveOperadores(list) { try { localStorage.setItem(STORAGE_OPERADORES, JSON.stringify(list)); } catch {} }
-function getOperadores() { const fromRecords=[...new Set(records.map(r=>r.operador||'').filter(Boolean))]; const fromStorage=loadOperadores(); return [...new Set([...fromRecords,...fromStorage])].sort(); }
+function loadDeletedOperadores() { try { const d=localStorage.getItem(STORAGE_OPERADORES_DELETED); return d?JSON.parse(d):[]; } catch { return []; } }
+function saveDeletedOperadores(list) { try { localStorage.setItem(STORAGE_OPERADORES_DELETED, JSON.stringify(list)); } catch {} }
+function getOperadores() { const deleted=new Set(loadDeletedOperadores()); const fromRecords=[...new Set(records.map(r=>r.operador||'').filter(Boolean))]; const fromStorage=loadOperadores(); return [...new Set([...fromRecords,...fromStorage])].filter(o=>!deleted.has(o)).sort(); }
 
 // ── app state ─────────────────────────────────────────────────
 let dark    = localStorage.getItem(STORAGE_DARK)==="1";
@@ -492,6 +495,9 @@ function deleteOperador(nome) {
   if(confirm(`Deletar operador "${nome}"?`)) {
     const list = loadOperadores().filter(o => o !== nome);
     saveOperadores(list);
+    const deleted = loadDeletedOperadores();
+    if(!deleted.includes(nome)) deleted.push(nome);
+    saveDeletedOperadores(deleted);
     if(operadorAtual === nome) { operadorAtual = ""; localStorage.setItem(STORAGE_OPERADOR, ""); form.operador = ""; }
     render();
   }
